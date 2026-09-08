@@ -465,6 +465,14 @@ fbq('track', 'PageView');
 src="https://www.facebook.com/tr?id=1509451804168738&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RZ2PWT6E21"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-RZ2PWT6E21');
+</script>
 </head>
 <body>
 
@@ -1012,6 +1020,9 @@ src="https://www.facebook.com/tr?id=1509451804168738&ev=PageView&noscript=1"
     // Meta Pixel — track this as a Lead (they gave us name/phone/email for the discount code).
     if (typeof fbq === 'function') { fbq('track', 'Lead'); }
 
+    // GA4 — same thing, recommended "generate_lead" event.
+    if (typeof gtag === 'function') { gtag('event', 'generate_lead', { event_category: 'engagement', event_label: 'Popup 10% off form' }); }
+
     // Send the lead to GoHighLevel via the Inbound Webhook. mode:'no-cors' is used
     // because GHL's webhook won't send back CORS headers for a browser fetch —
     // this still delivers the POST, we just can't read the (opaque) response.
@@ -1112,6 +1123,22 @@ src="https://www.facebook.com/tr?id=1509451804168738&ev=PageView&noscript=1"
       fbq('track', 'Contact');
     } else if (href.indexOf('wa.me') !== -1) {
       fbq('track', 'Contact');
+    }
+  });
+</script>
+<script>
+  // GA4 — auto-track Book Now clicks and Contact clicks (call/WhatsApp) sitewide.
+  document.addEventListener('click', function (e) {
+    if (typeof gtag !== 'function') return;
+    const a = e.target.closest('a');
+    if (!a) return;
+    const href = a.getAttribute('href') || '';
+    if (href.indexOf('leadconnectorhq.com/booking') !== -1) {
+      gtag('event', 'book_now_click', { event_category: 'engagement', event_label: 'Book Now button' });
+    } else if (href.indexOf('tel:') === 0) {
+      gtag('event', 'call_click', { event_category: 'engagement', event_label: 'Call/Text link' });
+    } else if (href.indexOf('wa.me') !== -1) {
+      gtag('event', 'whatsapp_click', { event_category: 'engagement', event_label: 'WhatsApp link' });
     }
   });
 </script>
