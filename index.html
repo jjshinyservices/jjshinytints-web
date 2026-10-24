@@ -516,6 +516,35 @@
     padding:16px; margin:18px 0; font-family:'Rajdhani',sans-serif; font-size:1.6rem;
     letter-spacing:.08em; color:var(--accent); font-weight:700;
   }
+
+  /* PPF & Wraps nav dropdown */
+  nav.links a{white-space:nowrap;}
+  header{overflow-x:clip;} /* backdrop-filter makes header the containing block of the off-canvas menu */
+  @media (max-width:1100px){
+    nav.links{
+      position:fixed; inset:0 0 0 auto; width:min(78vw,320px); height:100vh;
+      background:var(--bg-alt); flex-direction:column; align-items:flex-start;
+      padding:90px 28px 28px; gap:22px; transform:translateX(100%); transition:transform .25s ease;
+      border-left:1px solid var(--border);
+    }
+    nav.links.open{transform:translateX(0);}
+    .menu-toggle{display:block;}
+    .nav-drop-menu{position:static; opacity:1; visibility:visible; background:none; border:none; padding:10px 0 0 12px; margin:0; min-width:0; gap:12px;}
+    nav.links .nav-drop-menu a{padding:0;}
+  }
+  .nav-drop{position:relative;}
+  .nav-drop-menu{
+    position:absolute; top:100%; left:-14px; min-width:220px; padding:10px 0; margin-top:8px;
+    background:var(--bg-alt); border:1px solid var(--border); border-radius:10px;
+    display:flex; flex-direction:column; opacity:0; visibility:hidden; transition:opacity .15s ease;
+  }
+  .nav-drop::after{content:""; position:absolute; left:0; right:0; top:100%; height:12px;}
+  .nav-drop:hover .nav-drop-menu, .nav-drop:focus-within .nav-drop-menu{opacity:1; visibility:visible;}
+  nav.links .nav-drop-menu a{padding:8px 16px;}
+  @media (max-width:900px){
+    .nav-drop-menu{position:static; opacity:1; visibility:visible; background:none; border:none; padding:10px 0 0 12px; margin:0; min-width:0; gap:12px;}
+    nav.links .nav-drop-menu a{padding:0;}
+  }
 </style>
 <!-- Meta Pixel Code -->
 <script>
@@ -551,6 +580,13 @@ src="https://www.facebook.com/tr?id=1509451804168738&ev=PageView&noscript=1"
     <nav class="links" id="navLinks">
       <a href="#services">Services</a>
       <a href="residential-commercial.html">Residential/Commercial</a>
+      <div class="nav-drop">
+        <a href="ppf.html">PPF &amp; Wraps ▾</a>
+        <div class="nav-drop-menu">
+          <a href="ppf.html">Paint Protection Film</a>
+          <a href="wraps.html">Vinyl Wraps</a>
+        </div>
+      </div>
       <a href="#pricing">Pricing</a>
       <a href="#gallery">Gallery</a>
       <a href="#area">Service Area</a>
@@ -622,6 +658,7 @@ src="https://www.facebook.com/tr?id=1509451804168738&ev=PageView&noscript=1"
         </div>
       </div>
       <p style="margin-top:24px; font-size:.9rem;">Also tinting a home or business in Central Florida? We offer <a href="/residential-commercial.html" style="color:var(--accent);">residential &amp; commercial window tinting</a> too — <a href="#contact" style="color:var(--accent);">ask us for a quote</a>.</p>
+      <p style="margin-top:10px; font-size:.9rem;">Want to protect or restyle your paint? We also install <a href="/ppf.html" style="color:var(--accent);">paint protection film (PPF)</a> and <a href="/wraps.html" style="color:var(--accent);">vinyl wraps</a> indoors — at our location in Kissimmee or in your garage.</p>
     </div>
   </section>
 
@@ -938,6 +975,8 @@ src="https://www.facebook.com/tr?id=1509451804168738&ev=PageView&noscript=1"
           <li><a href="#gallery">Gallery</a></li>
           <li><a href="#faq">FAQ</a></li>
           <li><a href="residential-commercial.html">Residential/Commercial</a></li>
+          <li><a href="ppf.html">Paint Protection Film</a></li>
+          <li><a href="wraps.html">Vinyl Wraps</a></li>
           <li><a href="terms.html">Terms &amp; Conditions</a></li>
         </ul>
       </div>
