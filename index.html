@@ -519,7 +519,6 @@
 
   /* PPF & Wraps nav dropdown */
   nav.links a{white-space:nowrap;}
-  header{overflow-x:clip;} /* backdrop-filter makes header the containing block of the off-canvas menu */
   @media (max-width:1100px){
     nav.links{
       position:fixed; inset:0 0 0 auto; width:min(78vw,320px); height:100vh;
@@ -544,6 +543,15 @@
   @media (max-width:900px){
     .nav-drop-menu{position:static; opacity:1; visibility:visible; background:none; border:none; padding:10px 0 0 12px; margin:0; min-width:0; gap:12px;}
     nav.links .nav-drop-menu a{padding:0;}
+  }
+  /* Mobile menu fix: blur moved to ::before so the header is no longer the containing block of the fixed menu */
+  header{background:transparent; -webkit-backdrop-filter:none; backdrop-filter:none;}
+  header .nav{padding-left:20px; padding-right:20px;}
+  header::before{content:""; position:absolute; inset:0; z-index:-1; background:rgba(10,12,16,.88); -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);}
+  @media (max-width:1100px){
+    nav.links{z-index:60; height:100vh; height:100dvh; overflow-y:auto; visibility:hidden; transition:transform .25s ease, visibility 0s linear .25s;}
+    nav.links.open{visibility:visible; transition:transform .25s ease;}
+    .menu-toggle{position:relative; z-index:70;}
   }
 </style>
 <!-- Meta Pixel Code -->
@@ -1063,8 +1071,9 @@ src="https://www.facebook.com/tr?id=1509451804168738&ev=PageView&noscript=1"
   document.getElementById('year').textContent = new Date().getFullYear();
   const toggle = document.getElementById('menuToggle');
   const links = document.getElementById('navLinks');
-  toggle.addEventListener('click', () => links.classList.toggle('open'));
-  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+  const setMenu = (open) => { links.classList.toggle('open', open); toggle.textContent = open ? '✕' : '☰'; toggle.setAttribute('aria-expanded', open); };
+  toggle.addEventListener('click', () => setMenu(!links.classList.contains('open')));
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
 
   // ---- Lead popup ----
   // JOSE: replace these two lines with your real discount code and GHL webhook URL (see comment above).
