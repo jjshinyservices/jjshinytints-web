@@ -686,7 +686,9 @@ fbq('track', 'ViewContent', { content_name: '10% Off Sides & Back - Meta LP', co
     if (typeof fbq === 'function') {
       // Save for Advanced Matching on this visitor's next page loads (the Pixel hashes it before sending).
       try { localStorage.setItem('jj_ud', JSON.stringify({ em: email.toLowerCase(), ph: phoneE164, fn: firstName.toLowerCase(), ln: lastName.toLowerCase(), st: 'fl', country: 'us' })); } catch(e) {}
-      fbq('track', 'Lead', {
+      // The Lead itself is sent server-side by GHL (Meta Conversions API, workflow "Website Discount Pop-Up").
+      // GHL's CAPI action can't pass event_id, so the browser sends SubmitApplication instead to avoid counting the lead twice.
+      fbq('track', 'SubmitApplication', {
         content_name: '10% Off Sides & Back', content_category: film,
         currency: 'USD', value: est.value, vehicle_type: veh, language: LANG
       }, { eventID: eventId });
@@ -696,13 +698,13 @@ fbq('track', 'ViewContent', { content_name: '10% Off Sides & Back - Meta LP', co
     fetch(GHL_WEBHOOK_URL, {
       method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(Object.assign({
-        full_name: name, first_name: firstName, last_name: lastName, phone: phone, email: email,
+        full_name: name, first_name: firstName, last_name: lastName, firstName: firstName, lastName: lastName, phone: phone, email: email,
         vehicle_type: veh, film_type: film, addons: addons.join(', '),
         promo_code: DISCOUNT_CODE, language: LANG === 'es' ? 'Spanish' : 'English',
         source: 'Meta Ads LP 10% - jjshinytints.com/10off',
         consent: true,
         // Everything GHL needs to send the same Lead to Meta's Conversions API (deduplicated by event_id):
-        event_name: 'Lead', event_id: eventId, event_time: Math.floor(Date.now() / 1000),
+        event_name: 'Lead', event_id: eventId, browser_event: 'SubmitApplication', event_time: Math.floor(Date.now() / 1000),
         event_source_url: location.href, action_source: 'website',
         lead_value: est.value, currency: 'USD',
         fbp: getCookie('_fbp'), fbc: getCookie('_fbc'), external_id: window.JJ_VID,
